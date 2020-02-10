@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { SongService } from '../service/song.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-song',
@@ -7,9 +10,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddSongPage implements OnInit {
 
-  constructor() { }
+  songForm: FormGroup;
+
+  constructor(private songAPI: SongService, private router: Router, public fb: FormBuilder, private zone: NgZone) {
+    this.songForm = this.fb.group({
+      song_name: [''],
+      artist: ['']
+    });
+  }
 
   ngOnInit() {
+  }
+
+  onFormSubmit() {
+    if (!this.songForm.valid) {
+      return false;
+    } else {
+      this.songAPI.addSong(this.songForm.value)
+        .subscribe((res) => {
+          this.zone.run(() => {
+            console.log(res);
+            this.songForm.reset();
+            this.router.navigate(['/home']);
+          })
+        })
+    }
   }
 
 }
