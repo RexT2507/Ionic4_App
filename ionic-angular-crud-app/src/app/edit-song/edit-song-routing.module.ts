@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 import { EditSongPage } from './edit-song.page';
 
@@ -11,7 +13,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forChild(routes)
+  ],
   exports: [RouterModule],
 })
 export class EditSongPageRoutingModule {}
